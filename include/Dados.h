@@ -38,7 +38,7 @@ class Dados
         bool checaSeOrdenacaoFoiEstavel();
 
         // funcao auxiliar para o ShellSort
-        void insDiretaShellSort(int n, int h, int f);
+        Estatisticas insDiretaShellSort(int n, int h, int f);
 
     private: // elementos que somente podem ser acessados dentro da classe
 
