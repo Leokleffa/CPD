@@ -3,7 +3,6 @@
 #include <iostream>     // std::cout
 #include <algorithm>    // std::sort
 
-
 //////////////////////////////////
 /// CONSTRUTORES E DESTRUTORES ///
 //////////////////////////////////
@@ -47,7 +46,7 @@ Estatisticas Dados::ordenaComBubbleSort()
 
         for(i = 0; i < m; i++){
             est.comparacoes++;
-
+            est.comparacoes++;
             if(registros[i] > registros[i + 1]){
                 est.trocas++;
 
@@ -61,6 +60,7 @@ Estatisticas Dados::ordenaComBubbleSort()
             }
         }
         m = k;
+        est.comparacoes++;
     }while(troca == 1);
 
     return est;
@@ -69,8 +69,7 @@ Estatisticas Dados::ordenaComBubbleSort()
 Estatisticas Dados::ordenaComInsertionSort()
 {
     Estatisticas est;
-    est.trocas = 0;
-    est.comparacoes = 0;
+
 
     // TODO: implementar codigo do insertionSort
     Registro escolhido;
@@ -94,7 +93,7 @@ Estatisticas Dados::ordenaComInsertionSort()
 
 Estatisticas Dados::ordenaComShellSort(TipoShellSort tipo)
 {
-    Estatisticas est;
+    Estatisticas est, aux;
     est.trocas = 0;
     est.comparacoes = 0;
 
@@ -107,26 +106,38 @@ Estatisticas Dados::ordenaComShellSort(TipoShellSort tipo)
 
     for(p = sequenciaDeGaps.size() - 1; p >= 0; p--){
         h = sequenciaDeGaps[p];
-        for(f = 0; f < h; f++)
-            insDiretaShellSort(registros.size(), h, f);
+        for(f = 0; f < h; f++){
+            aux = insDiretaShellSort(registros.size(), h, f);
+            est.comparacoes += aux.comparacoes;
+            est.trocas += aux.trocas;
+        }
     }
 
     return est;
 }
 
-void Dados::insDiretaShellSort(int n, int h, int f){
+Estatisticas Dados::insDiretaShellSort(int n, int h, int f){
     int i, j;
     Registro chave;
+    Estatisticas est;
+    est.trocas = 0;
+    est.comparacoes = 0;
 
     for(j=f+h;j<n;j+=h){
+        est.comparacoes++;
         chave=registros[j];
         i=j-h;
+        est.comparacoes += 2;
         while(i > 0 && registros[i] > chave){
+            est.comparacoes += 2;
+            est.trocas++;
             registros[i + h] = registros[i];
             i = i - h;
         }
         registros[i+h]=chave;
     }
+
+    return est;
 }
 
 bool Dados::checaSeOrdenacaoFoiEstavel()
