@@ -69,7 +69,8 @@ Estatisticas Dados::ordenaComBubbleSort()
 Estatisticas Dados::ordenaComInsertionSort()
 {
     Estatisticas est;
-
+    est.trocas = 0;
+    est.comparacoes = 0;
 
     // TODO: implementar codigo do insertionSort
     Registro escolhido;
@@ -85,6 +86,7 @@ Estatisticas Dados::ordenaComInsertionSort()
             est.trocas++;
             registros[i+1]=registros[i];
             i--;
+            est.comparacoes+=2;
         }
         registros[i+1]=escolhido;
     }
@@ -104,9 +106,11 @@ Estatisticas Dados::ordenaComShellSort(TipoShellSort tipo)
 
     // TODO: implementar codigo do shellSort
 
-    for(p = sequenciaDeGaps.size() - 1; p >= 0; p--){
-        h = sequenciaDeGaps[p];
+    for(p = sequenciaDeGaps.size(); p > 0; p--){
+        est.comparacoes++;
+        h = sequenciaDeGaps[p-1];
         for(f = 0; f < h; f++){
+            est.comparacoes++;
             aux = insDiretaShellSort(registros.size(), h, f);
             est.comparacoes += aux.comparacoes;
             est.trocas += aux.trocas;
@@ -128,7 +132,7 @@ Estatisticas Dados::insDiretaShellSort(int n, int h, int f){
         chave=registros[j];
         i=j-h;
         est.comparacoes += 2;
-        while(i > 0 && registros[i] > chave){
+        while(i >= 0 && registros[i] > chave){
             est.comparacoes += 2;
             est.trocas++;
             registros[i + h] = registros[i];
